@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+</head>
+<body>
+    <h1>Chatting application using web socket</h1>
+
+    <input type="text" id="message" placeholder="Enter your message"/>
+    <button id="sendBtn">Send</button>
+
+    <h3>Messages from all users</h3>
+    <div id="messages"></div>
+    <!-- <button onclick="createConnection()">Click to connect web socket</button> -->
+
+    <script src="/socket.io/socket.io.js">
+        // install socket.io in frontend
+    </script>
+    <script>
+            // this line build the socket connection 
+        const socket = io();
+        const sendBtn = document.getElementById("sendBtn");
+        const messageInput = document.getElementById("message");
+        const allMessages = document.getElementById("messages");
+
+        // if we get any message from backend by the name of "server is sending the message:"
+        socket.on("server is sending the message:",(message) =>{
+            // console.log("message from backend:",message)
+            const p = document.createElement("p");
+            p.innerText = message;
+            allMessages.appendChild(p);
+
+        });
+
+        sendBtn.addEventListener("click", (e)=>{
+            const message = messageInput.value;
+            console.log("Printing the user message : ",message);
+            // emit is used to send the message
+            socket.emit("client-message", message);
+        })
+    
+      </script>
+</body>
+</html>
